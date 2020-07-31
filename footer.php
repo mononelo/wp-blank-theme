@@ -11,9 +11,7 @@
     </div><!--WRAPPER-->
     
     <!--SCRIPTS-->
-    <script src="<?php bloginfo('template_url'); ?>/js/jquery-3.2.1.min.js"></script>
-	<script src="<?php bloginfo('template_url'); ?>/inc/fancybox/jquery.fancybox.min.js"></script>
-	<script src="<?php bloginfo('template_url'); ?>/js/scripts.js"></script>
+	<script src="<?=getPath('app','js')?>"></script>
     <!--SCRIPTS-->
     
     <?php wp_footer(); ?>

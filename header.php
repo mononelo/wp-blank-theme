@@ -6,19 +6,24 @@ ini_set('display_errors', 1);
 <html>
 <head>
 
-	<!--META TGS-->
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!--META TAGS-->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="Title" content="<?php bloginfo('name'); ?>">
-    <meta name="Author" content="">
+    <meta name="Author" content="mononelo">
     <meta name="Description" content="<?php bloginfo('description'); ?>">
-    <meta name="Keywords" content="">
     <meta name="Language" content="English">
     <meta name="Revisit" content="1 day">
-    <meta name="Distribution" content="Global">
-    <meta name="Robots" content="All">
-    <!--META TGS-->
+    <!--META TAGS-->
+    
+    <!--RESPONSIVE-->
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!--RESPONSIVE-->
     
 	<title><?php wp_title('––'); ?></title>
+	
+	<!--CANONICAL-->
+	<link rel="canonical" href="<?php the_permalink(); ?>">
+	<!--CANONICAL-->
     
     <!--RSS-->
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php bloginfo('rss2_url'); ?>" />
@@ -26,8 +31,7 @@ ini_set('display_errors', 1);
     <!--RSS-->
 
     <!--CSS-->
-    <link type="text/css" rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/fonts.css" />
-    <link type="text/css" rel="stylesheet" href="<?php bloginfo('template_url'); ?>/inc/fancybox/jquery.fancybox.min.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<?=getPath('app','css')?>" />
     <link type="text/css" rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" />
     <!--CSS-->
 
@@ -35,15 +39,11 @@ ini_set('display_errors', 1);
 	<link rel="icon" type="image/png" href="<?php bloginfo('template_url'); ?>/images/favicon.png" />
 	<link rel="apple-touch-icon-precomposed" href="<?php bloginfo('template_url'); ?>/images/apple.png"/>
     
-    <!--RESPONSIVE-->
-	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <!--RESPONSIVE-->
-    
     <?php wp_head(); ?> 
     
 </head>
 
-<body <?php body_class();?> onResize="javascript:resize();">
+<body <?php body_class();?>>
 	<div id="wrapper">
 		<div id="header">
     		<div class="content">
