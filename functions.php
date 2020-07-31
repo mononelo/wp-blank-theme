@@ -19,40 +19,6 @@ function getPath($file, $ext){
 if ( function_exists( 'add_theme_support' ) )
 add_theme_support( 'post-thumbnails' );
 
-remove_filter('get_the_excerpt', 'wp_trim_excerpt');
-add_filter('get_the_excerpt', 'custom_trim_excerpt');
-
-// THE EXCERPT LENGTH
-
-function custom_trim_excerpt($text) {
-	global $post;
-	if ( '' == $text ) {
-		$text = get_the_content('');
-		$text = apply_filters('the_content', $text);
-		$text = str_replace(']]>', ']]>', $text);
-		$text = strip_tags($text);
-		$excerpt_length = 45;
-		$words = explode(' ', $text, $excerpt_length + 1);
-		if (count($words) > $excerpt_length) {
-			array_pop($words);
-			array_push($words, '...');
-			$text = implode(' ', $words);
-		}
-	}
-	return $text;
-}
-
-// GET THE EXCERPT BY ID
-
-function get_the_excerpt_by_id($post_id) {
-	global $post;  
-	$save_post = $post;
-	$post = get_post($post_id);
-	$output = get_the_excerpt();
-	$post = $save_post;
-	return $output;
-}
-
 // REGISTER SIDEBAR
 
 if ( function_exists('register_sidebar') ) {
@@ -64,25 +30,6 @@ if ( function_exists('register_sidebar') ) {
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widget-title">',
 	));
-}
-
-// SHORTEN STRING
-
-function truncate_string($string,$length){
-	if (strlen($string) > $length) {
-		$stringnew = substr($string,0,$length);
-		return $stringnew.'...';
-	}else{
-		return $string;
-	}
-}
-
-// FORMAT LINKS (eg: http://www.domain.com/ into domain.com) 
-
-function format_link($url){
-	$u = parse_url($url);
-	$new_url = str_replace('www.','',$u['host']);
-	return $new_url;
 }
 
 // REMOVE ADMIN BAR
