@@ -47,9 +47,10 @@ ini_set('display_errors', 1);
 	<div id="wrapper">
 		<div id="header">
     		<div class="content">
-                <h1 id="title-top"><a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a></h1>
+				<?php if(is_front_page()) $logo_tag = 'h1'; else $logo_tag = 'div'; ?>
+                <<?=$logo_tag?> id="title-top"><a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a></<?=$logo_tag?>>
                 <h2 id="desc-top"><?php bloginfo('description'); ?></h2>
-                <?php wp_nav_menu( array( 'container' => 'top-menu', 'menu' => 'top-menu') ); ?>
+					<?php wp_nav_menu( array( 'container' => 'div', 'container_id' => 'main-menu', 'container_class' => 'menu', 'menu_class' => 'menu-list', 'menu_id' => 'main-menu-list', 'menu' => 'main-menu') ); ?>
 			</div><!--CONTENT-->
         </div><!--HEADER-->
         <div id="body">

@@ -19,6 +19,59 @@ function getPath($file, $ext){
 if ( function_exists( 'add_theme_support' ) )
 add_theme_support( 'post-thumbnails' );
 
+
+//Remove Gutenberg Block Library CSS from loading on the frontend
+function smartwp_remove_wp_block_library_css(){
+    wp_dequeue_style( 'wp-block-library' );
+    wp_dequeue_style( 'wp-block-library-theme' );
+    wp_dequeue_style( 'wc-block-style' ); // Remove WooCommerce block CSS
+} 
+add_action( 'wp_enqueue_scripts', 'smartwp_remove_wp_block_library_css', 100 );
+
+// Remove the REST API endpoint.
+remove_action( 'rest_api_init', 'wp_oembed_register_route' );
+ 
+// Turn off oEmbed auto discovery.
+add_filter( 'embed_oembed_discover', '__return_false' );
+ 
+// Don't filter oEmbed results.
+remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
+ 
+// Remove oEmbed discovery links.
+remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+ 
+// Remove oEmbed-specific JavaScript from the front-end and back-end.
+remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+ 
+// Remove all embeds rewrite rules.
+add_filter( 'rewrite_rules_array', 'disable_embeds_rewrites' );
+
+//Disable emojis in WordPress
+add_action( 'init', 'smartwp_disable_emojis' );
+
+function smartwp_disable_emojis() {
+	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+	remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+	remove_action( 'admin_print_styles', 'print_emoji_styles' );
+	remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+	remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	add_filter( 'tiny_mce_plugins', 'disable_emojis_tinymce' );
+}
+
+function disable_emojis_tinymce( $plugins ) {
+	if ( is_array( $plugins ) ) {
+		return array_diff( $plugins, array( 'wpemoji' ) );
+	} else {
+		return array();
+	}
+}
+
+// PREVENT SCALNG IMAGES
+
+add_filter( 'big_image_size_threshold', '__return_false' );
+
 // REGISTER SIDEBAR
 
 if ( function_exists('register_sidebar') ) {
@@ -36,6 +89,23 @@ if ( function_exists('register_sidebar') ) {
 
 function remove_admin_bar() { show_admin_bar(false); }
 add_action('after_setup_theme', 'remove_admin_bar');
+
+// REMOVE CONTENT BOX
+
+function remove_editor() {
+    if (isset($_GET['post'])) {
+        $id = $_GET['post'];
+        $template = get_post_meta($id, '_wp_page_template', true);
+		$templates = array(
+			'template-home.php',
+		);
+
+        if(in_array($template,$templates)){ 
+            remove_post_type_support( 'page', 'editor' );
+        }
+    }
+}
+add_action('init', 'remove_editor');
 
 // CUSTOM POST TYPE
 
@@ -95,6 +165,50 @@ function add_menu_icons_styles(){
 } 
 	
 add_action( 'admin_head', 'add_menu_icons_styles' );
+
+// GET SVG INLINE
+
+function get_SVG($attachment_id){
+	if($attachment_id){
+		$image_url = wp_get_attachment_url($attachment_id);
+		$image_content = file_get_contents($image_url);
+		
+		$image_size = get_SVG_size($image_url);
+		$width  = $image_size['w'];
+		$height = $image_size['h'];
+		
+		$image_content = str_replace('<svg','<svg width="'.$width.'" height="'.$height.'"',$image_content);
+		
+		$image_content = str_replace('id="Capa_1" ','',$image_content);
+		
+		return $image_content;
+	}else{
+		return NULL;
+	}
+}
+function the_SVG($attachment_id){
+	echo get_SVG($attachment_id);
+}
+function get_SVG_size($image_url){
+	$image_content = file_get_contents($image_url);
+
+	$viewbox = get_string_between($image_content,'viewBox="','"');
+	$viewbox = str_replace('0 0 ','',$viewbox);
+	list($width,$height) = explode(' ', $viewbox);
+	
+	return array(
+		'w' => round($width),
+		'h' => round($height),
+	);
+}
+function get_string_between($string, $start, $end){
+    $string = ' ' . $string;
+    $ini = strpos($string, $start);
+    if ($ini == 0) return '';
+    $ini += strlen($start);
+    $len = strpos($string, $end, $ini) - $ini;
+    return substr($string, $ini, $len);
+}
 
 
 ?>
