@@ -1,0 +1,35 @@
+/* CSS Document */
+
+@mixin section($c,$p){
+	#{$p}-top: $c * 75px;
+	#{$p}-bottom: $c * 75px;
+	
+	@include media-breakpoint-between(sm,lg){
+		#{$p}-top: $c * 5%;
+		#{$p}-bottom: $c * 5%;
+	}
+	@include media-breakpoint-down(sm){
+		#{$p}-top: $c * 37px;
+		#{$p}-bottom: $c * 37px;
+	}
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        $browser: '-webkit-' !global;
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        $browser: '-moz-' !global;
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        $browser: '-o-' !global;
+        @content;
+    }
+    @keyframes #{$animationName} {
+        $browser: '' !global;
+        @content;
+    }
+} $browser: null;
+
