@@ -6,4 +6,4 @@ This theme includes webpack initial files to install. Check the default packages
 I hope you enjoy it and that you start saving time and effort at the beginning of your projects.
 
 <br><br>
-<img src="https://media1.tenor.com/images/d6fcd41b8522f719964a946b18367d27/tenor.gif?itemid=12626969" width="150" height="auto">
+<img src="https://media1.tenor.com/images/d6fcd41b8522f719964a946b18367d27/tenor.gif?itemid=12626969" width="250" height="auto" style="max-width:100%;">
