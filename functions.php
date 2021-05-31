@@ -2,7 +2,6 @@
 
 
 // FUNCTION TO RESOLVE ASSETS
-
 function getPath($file, $ext){
 	if ($_SERVER['HTTP_HOST'] == 'mononelo') {
 		if ($ext == 'css') $folder = 'css/'; else $folder = '';
@@ -16,8 +15,18 @@ function getPath($file, $ext){
 	}
 }
 
-if ( function_exists( 'add_theme_support' ) )
-add_theme_support( 'post-thumbnails' );
+// SUPPORTS
+if ( function_exists( 'add_theme_support' ) ){
+	add_theme_support( 'post-thumbnails' );
+	add_theme_support( 'menus' );
+}
+
+// REGISTER INITIAL MENU
+function wp_custom_new_menu() {
+	register_nav_menu('main-menu',__( 'Main Menu' ));
+}
+
+add_action( 'init', 'wp_custom_new_menu' );
 
 // REMOVE SPANS OF WPCF7
 add_filter( 'wpcf7_autop_or_not', '__return_false' );
@@ -72,11 +81,9 @@ function disable_emojis_tinymce( $plugins ) {
 }
 
 // PREVENT SCALNG IMAGES
-
 add_filter( 'big_image_size_threshold', '__return_false' );
 
 // REGISTER SIDEBAR
-
 if ( function_exists('register_sidebar') ) {
 	register_sidebar(array(
 		'name' => 'Default Sidebar',
@@ -84,17 +91,15 @@ if ( function_exists('register_sidebar') ) {
 		'description' => 'Sidebar',
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
-		'before_title' => '<h4 class="widget-title">',
+		'before_title' => '<div class="widget-title">',
 	));
 }
 
 // REMOVE ADMIN BAR
-
 function remove_admin_bar() { show_admin_bar(false); }
 add_action('after_setup_theme', 'remove_admin_bar');
 
 // REMOVE CONTENT BOX
-
 function remove_editor() {
     if (isset($_GET['post'])) {
         $id = $_GET['post'];
@@ -111,9 +116,8 @@ function remove_editor() {
 add_action('init', 'remove_editor');
 
 // CUSTOM POST TYPE
-
 function post_type_proyecto() {
- 
+
 	$supports =  array( 
 		'title', 
 		'editor', 
@@ -131,7 +135,8 @@ function post_type_proyecto() {
 		'menu_position' => 5,
 		'show_in_admin_bar' => true,
 		'supports' => $supports,
-		'has_archive' => true
+		'has_archive' => true,
+		'menu_icon' => 'dashicons-edit-large',
 	);
  
 	register_post_type( 'proyecto', $args );
@@ -159,18 +164,7 @@ function the_labels($capplural,$capsingular,$plural,$singular,$male){
 	);
 }
 
-function add_menu_icons_styles(){
-    ?>
-    <style>
-    	#adminmenu #menu-posts-question div.wp-menu-image:before { content: '\f209'; }
-    </style>
-	<?php 
-} 
-	
-add_action( 'admin_head', 'add_menu_icons_styles' );
-
 // GET SVG INLINE
-
 function get_image($attachment_id){
 	
 	if(is_array($attachment_id)) $attachment_id = $attachment_id[0];

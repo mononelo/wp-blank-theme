@@ -38,6 +38,7 @@ ini_set('display_errors', 1);
 	<!--ICONS-->
 	<link rel="icon" type="image/png" href="<?php bloginfo('template_url'); ?>/images/favicon.png" />
 	<link rel="apple-touch-icon-precomposed" href="<?php bloginfo('template_url'); ?>/images/apple.png"/>
+	<!--ICONS-->
     
     <?php wp_head(); ?> 
     
