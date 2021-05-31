@@ -171,30 +171,49 @@ add_action( 'admin_head', 'add_menu_icons_styles' );
 
 // GET SVG INLINE
 
-function get_SVG($attachment_id){
+function get_image($attachment_id){
+	
+	if(is_array($attachment_id)) $attachment_id = $attachment_id[0];
+	
 	if($attachment_id){
-		$image_url = wp_get_attachment_url($attachment_id);
-		$image_content = file_get_contents($image_url);
-		
-		$image_size = get_SVG_size($image_url);
-		$width  = $image_size['w'];
-		$height = $image_size['h'];
-		
-		$image_content = str_replace('<svg','<svg width="'.$width.'" height="'.$height.'"',$image_content);
-		
-		$image_content = str_replace('id="Capa_1" ','',$image_content);
-		
-		return $image_content;
+		if(getFileExt($attachment_id)=='svg'){
+			$num = md5(round(rand()));
+			$image_url = wp_get_attachment_url($attachment_id);
+			$image_content = file_get_contents($image_url);
+			if($image_content !== false AND !empty($image_content)) {
+				$image_size = get_SVG_size($image_content);
+				$width  = $image_size['w'];
+				$height = $image_size['h'];
+				$image_content = str_replace('<svg','<svg width="'.$width.'" height="'.$height.'"',$image_content);
+
+				$image_content = str_replace('class="st','class="'.$num.'-st',$image_content);
+				$image_content = str_replace('.st','.'.$num.'-st',$image_content);
+
+				$image_content = str_replace('id="Capa_1" ','',$image_content);
+
+				return $image_content;
+			}else{
+				return '<img src="'.get_bloginfo('template_url').'/images/blank.gif" data-img="'.$image_url.'">';
+			}
+		}else{
+			$image = wp_get_attachment_image_src($attachment_id,'full');
+			$image_width  = round($image[1]/2);
+			$image_height = round($image[2]/2);
+			return '<img src="'.get_bloginfo('template_url').'/images/blank.gif" data-img="'.$image[0].'" width="'.$image_width.'" height="'.$image_height.'">';
+		}
 	}else{
 		return NULL;
 	}
 }
-function the_SVG($attachment_id){
-	echo get_SVG($attachment_id);
+function the_image($attachment_id){
+	echo get_image($attachment_id);
 }
-function get_SVG_size($image_url){
-	$image_content = file_get_contents($image_url);
-
+function getFileExt($attachment_id){
+	$image_url = wp_get_attachment_url($attachment_id);
+	$image = explode('.',$image_url);
+	return end($image);
+}
+function get_SVG_size($image_content){
 	$viewbox = get_string_between($image_content,'viewBox="','"');
 	$viewbox = str_replace('0 0 ','',$viewbox);
 	list($width,$height) = explode(' ', $viewbox);
