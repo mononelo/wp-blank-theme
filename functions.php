@@ -19,6 +19,12 @@ function getPath($file, $ext){
 if ( function_exists( 'add_theme_support' ) )
 add_theme_support( 'post-thumbnails' );
 
+// REMOVE SPANS OF WPCF7
+add_filter( 'wpcf7_autop_or_not', '__return_false' );
+add_filter('wpcf7_form_elements', function($content) {
+    $content = preg_replace('/<(span).*?class="\s*(?:.*\s)?wpcf7-form-control-wrap(?:\s[^"]+)?\s*"[^\>]*>(.*)<\/\1>/i', '\2', $content);
+    return $content;
+});
 
 //Remove Gutenberg Block Library CSS from loading on the frontend
 function smartwp_remove_wp_block_library_css(){
@@ -42,9 +48,6 @@ remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
  
 // Remove oEmbed-specific JavaScript from the front-end and back-end.
 remove_action( 'wp_head', 'wp_oembed_add_host_js' );
- 
-// Remove all embeds rewrite rules.
-add_filter( 'rewrite_rules_array', 'disable_embeds_rewrites' );
 
 //Disable emojis in WordPress
 add_action( 'init', 'smartwp_disable_emojis' );
