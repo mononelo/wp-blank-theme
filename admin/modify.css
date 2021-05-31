@@ -1,0 +1,27 @@
+/* CSS Document */
+
+.rwmb-image_select-wrapper.select-3x3 .rwmb-input{
+	width: 180px !important;
+	max-width: 100% !important;
+}
+.rwmb-image_select-wrapper.select-3x3 .rwmb-label ~ .rwmb-input{
+	max-width: 75% !important;
+}
+.rwmb-image_select-wrapper.select-3x3 .rwmb-input .rwmb-image-select{
+	width: 50px;
+	height: 50px;
+	margin: 0;
+	border-radius: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: #cccccc;
+}
+.rwmb-image_select-wrapper.select-3x3 .rwmb-input .rwmb-image-select:hover{
+	background-color: #999999;
+}
+.rwmb-image_select-wrapper.select-3x3 .rwmb-input .rwmb-image-select.rwmb-active{
+	background-color: #0074a2;
+}
+.rwmb-image_select-wrapper.select-3x3 .rwmb-input p.description{
+	float: left;
+}
