@@ -21,12 +21,18 @@ if ( function_exists( 'add_theme_support' ) ){
 	add_theme_support( 'menus' );
 }
 
-// REGISTER INITIAL MENU
-function wp_custom_new_menu() {
-	register_nav_menu('main-menu',__( 'Main Menu' ));
-}
+// REMOVE SPANS OF WPCF7
+add_filter( 'wpcf7_autop_or_not', '__return_false' );
+add_filter('wpcf7_form_elements', function($content) {
+    $content = preg_replace('/<(span).*?class="\s*(?:.*\s)?wpcf7-form-control-wrap(?:\s[^"]+)?\s*"[^\>]*>(.*)<\/\1>/i', '\2', $content);
+    return $content;
+});
 
-add_action( 'init', 'wp_custom_new_menu' );
+// Disables the block editor from managing widgets in the Gutenberg plugin.
+add_filter( 'gutenberg_use_widgets_block_editor', '__return_false', 100 );
+
+// Disables the block editor from managing widgets. renamed from wp_use_widgets_block_editor
+add_filter( 'use_widgets_block_editor', '__return_false' );
 
 // REMOVE SPANS OF WPCF7
 add_filter( 'wpcf7_autop_or_not', '__return_false' );
@@ -34,6 +40,24 @@ add_filter('wpcf7_form_elements', function($content) {
     $content = preg_replace('/<(span).*?class="\s*(?:.*\s)?wpcf7-form-control-wrap(?:\s[^"]+)?\s*"[^\>]*>(.*)<\/\1>/i', '\2', $content);
     return $content;
 });
+
+// PREVENT SCALNG IMAGES
+add_filter( 'big_image_size_threshold', '__return_false' );
+
+// DISABLE MIGRATE JQUERY
+function remove_jquery_migrate($scripts){
+   if (!is_admin() && isset($scripts->registered['jquery'])) {
+      $script = $scripts->registered['jquery'];
+                    
+      if ($script->deps) {
+         // Check whether the script has any dependencies
+         $script->deps = array_diff($script->deps, array(
+            'jquery-migrate'
+         ));
+      }
+   }
+}
+add_action('wp_default_scripts', 'remove_jquery_migrate');
 
 //Remove Gutenberg Block Library CSS from loading on the frontend
 function smartwp_remove_wp_block_library_css(){
@@ -80,8 +104,16 @@ function disable_emojis_tinymce( $plugins ) {
 	}
 }
 
-// PREVENT SCALNG IMAGES
-add_filter( 'big_image_size_threshold', '__return_false' );
+// REGISTER MENUS
+if ( ! function_exists( 'register_nav_menu' ) ) {
+
+    function register_nav_menu(){
+        register_nav_menus( array(
+            'main-menu' => 'Main Menu',
+        ) );
+    }
+    add_action( 'after_setup_theme', 'register_nav_menu', 0 );
+}
 
 // REGISTER SIDEBAR
 if ( function_exists('register_sidebar') ) {
@@ -93,6 +125,26 @@ if ( function_exists('register_sidebar') ) {
 		'after_widget' => '</div>',
 		'before_title' => '<div class="widget-title">',
 	));
+}
+
+// GET PAGE BY TEMPLATE
+function get_page_by_template($temp,$single=true){
+	
+	$pages = get_pages( array( 
+		'meta_key'    => '_wp_page_template', 
+		'meta_value'  => $temp,
+		'sort_column' => 'menu_order',
+	) ); 
+	
+	if($pages){
+		if($single){
+			return $pages[0]; 
+		}else{
+			return $pages;
+		}
+	}else{
+		return false;
+	}
 }
 
 // REMOVE ADMIN BAR

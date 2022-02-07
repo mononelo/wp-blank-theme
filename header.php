@@ -8,9 +8,6 @@ ini_set('display_errors', 1);
 
 	<!--META TAGS-->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="Title" content="<?php bloginfo('name'); ?>">
-    <meta name="Author" content="mononelo">
-    <meta name="Description" content="<?php bloginfo('description'); ?>">
     <meta name="Language" content="English">
     <meta name="Revisit" content="1 day">
     <!--META TAGS-->
@@ -32,7 +29,6 @@ ini_set('display_errors', 1);
 
     <!--CSS-->
     <link type="text/css" rel="stylesheet" href="<?=getPath('app','css')?>" />
-    <link type="text/css" rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" />
     <!--CSS-->
 
 	<!--ICONS-->
@@ -48,10 +44,8 @@ ini_set('display_errors', 1);
 	<div id="wrapper">
 		<div id="header">
     		<div class="content">
-				<?php if(is_front_page()) $logo_tag = 'h1'; else $logo_tag = 'div'; ?>
-                <<?=$logo_tag?> id="title-top"><a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a></<?=$logo_tag?>>
-                <h2 id="desc-top"><?php bloginfo('description'); ?></h2>
-					<?php wp_nav_menu( array( 'container' => 'div', 'container_id' => 'main-menu', 'container_class' => 'menu', 'menu_class' => 'menu-list', 'menu_id' => 'main-menu-list', 'menu' => 'main-menu') ); ?>
+                <div id="title-top"><a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a></div>
+				<?php wp_nav_menu( array( 'container' => 'div', 'container_id' => 'main-menu', 'container_class' => 'menu', 'menu_class' => 'menu-list', 'menu_id' => 'main-menu-list', 'menu' => 'main-menu') ); ?>
 			</div><!--CONTENT-->
         </div><!--HEADER-->
         <div id="body">

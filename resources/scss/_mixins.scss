@@ -1,16 +1,23 @@
 /* CSS Document */
 
-@mixin section($c,$p){
-	#{$p}-top: $c * 75px;
-	#{$p}-bottom: $c * 75px;
+@mixin section($p,$ct,$cb:null,$i:null){
+	@if ($cb == null) {
+        $cb : $ct;
+    }
+	@if ($i != null) {
+        $i : !important;
+	}
+	
+	@if($ct != 'inherit') { #{$p}-top: $ct * 75px $i; }
+	@if($cb != 'inherit') { #{$p}-bottom: $cb * 75px $i; }
 	
 	@include media-breakpoint-between(sm,lg){
-		#{$p}-top: $c * 5%;
-		#{$p}-bottom: $c * 5%;
+		@if($cb != 'inherit') { #{$p}-top: $ct * 5% $i; }
+		@if($cb != 'inherit') { #{$p}-bottom: $cb * 5% $i; }
 	}
 	@include media-breakpoint-down(sm){
-		#{$p}-top: $c * 37px;
-		#{$p}-bottom: $c * 37px;
+		@if($cb != 'inherit') { #{$p}-top: $ct * 37px $i; }
+		@if($cb != 'inherit') { #{$p}-bottom: $cb * 37px $i; }
 	}
 }
 

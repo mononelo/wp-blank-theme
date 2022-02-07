@@ -4,7 +4,7 @@ $fa-font-path: '../fonts';
 
 // BOOTSTRAP
 @import '~bootstrap/scss/functions';
-@import 'variables';
+// @import 'variables';
 @import '~bootstrap/scss/bootstrap';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 
@@ -14,11 +14,14 @@ $fa-font-path: '../fonts';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 
 // TINY SLIDER
-@import '~tiny-slider/src/tiny-slider';
+// @import '~tiny-slider/src/tiny-slider';
+
+// FANCYBOX
+// @import '~@fancyapps/fancybox/src/css/core.css';
 
 // CUSTOM LIBRARIES
 @import 'colors';
 @import 'fonts';
 @import 'mixins';
 @import 'reset';
-//@import 'variables';
+// @import 'variables';

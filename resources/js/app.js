@@ -2,59 +2,54 @@
 
 // VARIABLES
 
-var ww = window.innerWidth,
+var sc = 0,
+    ww = window.innerWidth,
 	wh = window.innerHeight;
 
 
 // LIBRARIES
 
 import $ from 'jquery'
-//import { tns } from 'tiny-slider/src/tiny-slider'
+// import balanceText from 'balance-text'
+// import fancybox from '@fancyapps/fancybox'
+// import { tns } from 'tiny-slider/src/tiny-slider'
+// import { fitVids } from './jquery.fitvids.js'
 
 
 // LISTENERS
 
 $(document).ready(function(){
 	resize();
+    
+    loadImages();
+    
+    // BALANCE TEXT
+    // if($('.balance').length>0)   balanceText($('.balance'),{watch: true});
+    // if($('.balance *').length>0) balanceText($('.balance *'),{watch: true});
+    
+    // FITVIDS
+    // $('iframe[src*="youtube"]').parent().fitVids();
+    
+	// FORM
+	// if($('input').length>0){
+	// 	$('input').each(function(){
+	// 		var $this = $(this);
+	// 		
+	// 		$this.blur(function(){
+	// 			if($this.val()==''){
+	// 				$this.removeClass('filled');
+	// 			}else{
+	// 				$this.addClass('filled');
+	// 			}
+	// 		});
+	// 	});
+	// }
 });
 
 window.onresize = resize;
 window.onscroll = scroll;
 
-
-// SMOOTHSCROLL
-
-$(document).ready( smoothscroll );
-
-function smoothscroll(time){
-	if(!time) time = 1000;
-	$('a[href]').each(function(){
-		var e = $(this), id = e.attr('href');
-		if(!e.parent().hasClass('no-scroll') && !e.hasClass('no-scroll')){
-			if(id[0]=='#'){
-				e.attr('href','javascript:void(0)');
-				e.click(function(){ smoothscrollto(id,time,0); });
-			}
-		}
-	});
-}
-
-export default function smoothscrollto(id,time,margin){
-	var p;
-	console.log(id);
-	if(id=='#'){
-		p = 0;
-	}else{
-		var e = $(id);
-		p = e.offset().top;
-	}
-	console.log(p);
-	$('html, body').animate({ scrollTop: (p+margin) },time);
-}
-
-
 // FUNCTIONS
-
 
 function resize(){
 	ww = window.innerWidth;
@@ -64,6 +59,8 @@ function resize(){
 
 function scroll(){
 	sc = getScrollOffsets();
+    
+    loadImages();
 }
 
 function getScrollOffsets() {
@@ -81,8 +78,6 @@ function getScrollOffsets() {
 }
 
 function loadImages(){
-	
-	// LOAD IMAGES
 	
 	var $bg_images = $('[data-bg]');
 	

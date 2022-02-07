@@ -1,8 +1,15 @@
 /* CSS Document */
 
+.rwmb-clone{
+	padding-right: 24px;
+}
+.rwmb-clone:only-child{
+	padding-right: 0;
+}
 .rwmb-image_select-wrapper.select-3x3 .rwmb-input{
 	width: 180px !important;
 	max-width: 100% !important;
+	flex: 0 0 180px !important;
 }
 .rwmb-image_select-wrapper.select-3x3 .rwmb-label ~ .rwmb-input{
 	max-width: 75% !important;
@@ -24,4 +31,9 @@
 }
 .rwmb-image_select-wrapper.select-3x3 .rwmb-input p.description{
 	float: left;
+}
+.rwmb-input input, 
+.rwmb-input textarea, 
+.rwmb-input select{
+	width: 100%;
 }
